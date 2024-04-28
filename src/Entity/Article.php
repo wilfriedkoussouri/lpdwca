@@ -183,4 +183,9 @@ class Article
 
         return $this;
     }
+
+    public function getSummary(int $length = 200): string
+    {
+        return substr($this->content, 0, $length) . (strlen($this->content) > $length ? '...' : '');
+    }
 }

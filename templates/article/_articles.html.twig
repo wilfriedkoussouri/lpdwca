@@ -1,0 +1,21 @@
+{% for article in articles %}
+	<a href="{{ path('article_show', {'id': article.id}) }}">
+		<div class="bg-gradient-to-br from-gray-700 to-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
+			<img class="w-full h-56 object-cover opacity-75 transition-opacity duration-300 ease-in-out hover:opacity-50" src="{{ asset('uploads/' ~ article.image) }}" alt="Blog image">
+			<div class="p-6">
+				<h2 class="text-2xl font-semibold text-white mb-3">{{article.title}}</h2>
+				<p class="text-gray-300 text-base mb-4">
+					{{article.getSummary|smart_strip_tags}}
+				</p>
+				<div class="flex items-center justify-between">
+					<span class="text-sm font-medium text-gray-400">{{article.modificationDate|date('d M. Y')}}</span>
+					<span class="flex items-center text-sm font-medium text-gray-400">
+						<svg fill="currentColor" class="w-5 h-5 mr-2 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3 3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+						{{article.comments|length}}
+						Comments
+					</span>
+				</div>
+			</div>
+		</div>
+	</a>
+{% endfor %}

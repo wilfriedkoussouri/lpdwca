@@ -26,3 +26,6 @@ services:
     App\EventSubscriber\EasyAdminSubscriber:
         tags:
             - { name: 'kernel.event_subscriber' }
+    App\EventListener\AccessDeniedListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

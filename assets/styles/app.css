@@ -1,3 +1,32 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+html {
+    height: 100%; 
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    flex: 1; 
+}
+
+.article-content h1{
+font-size: 16px;
+font-weight: bold;
+text-decoration: underline;
+}
+
+.text-xsm{
+    font-size: 10px;
+}

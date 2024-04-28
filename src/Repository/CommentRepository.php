@@ -21,6 +21,17 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+    public function findLatestByArticle($articleId, $limit = 5)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.article = :articleId')
+            ->setParameter('articleId', $articleId)
+            ->orderBy('c.modificationDate', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Comment[] Returns an array of Comment objects
     //     */

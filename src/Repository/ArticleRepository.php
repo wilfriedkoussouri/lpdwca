@@ -21,6 +21,48 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    public function findLatestArticles(int $limit = 3)
+    {
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.modificationDate', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOneById($value): ?Article
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    // Méthode pour récupérer l'article précédent
+    public function findPreviousArticle(Article $article)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.id < :articleId')
+            ->setParameter('articleId', $article->getId())
+            ->orderBy('a.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    // Méthode pour récupérer l'article suivant
+    public function findNextArticle(Article $article)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.id > :articleId')
+            ->setParameter('articleId', $article->getId())
+            ->orderBy('a.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     //    /**
     //     * @return Article[] Returns an array of Article objects
     //     */
