@@ -61,6 +61,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->setRegistrationDate(new \DateTime());
     }
 
+    public function __toString()
+    {
+        return $this->userName;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

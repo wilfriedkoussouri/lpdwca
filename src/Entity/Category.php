@@ -6,6 +6,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -15,6 +16,9 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
+    /*
+    * @Assert\Regex(pattern="/^[a-z0-9\-]+$/")
+    */
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -30,6 +34,11 @@ class Category
     public function __construct()
     {
         $this->articles = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
