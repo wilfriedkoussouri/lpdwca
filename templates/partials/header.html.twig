@@ -7,12 +7,12 @@
 			</a>
 		</div>
 
-		<div class="hidden lg:flex lg:flex-1 lg:justify-end">
-			{%if app.user %}
+		<div
+			class="lg:flex lg:flex-1 lg:justify-end">
+			<!-- Afficher ce contenu pour les écrans de grande taille -->
+			{% if app.user %}
 				<p class="text-sm font-semibold leading-6 text-gray-900 mr-2">Hi
-					{{app.user}}
-					!
-				</p>
+					{{app.user}}!</p>
 				<a href="{{ path('app_logout') }}" class="text-sm font-semibold leading-6 text-gray-900">Log out
 					<span aria-hidden="true">&rarr;</span>
 				</a>
