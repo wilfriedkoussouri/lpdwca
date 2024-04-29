@@ -3,7 +3,13 @@
 	<!-- Colonne de gauche pour le formulaire de commentaire -->
 	<div class="lg:w-1/2 lg:pr-4">
 		<div class="max-w-xl text-base leading-7 text-gray-700 lg:max-w-lg">
-			<h2 class="text-xl font-semibold mb-4">{{ app.user.username }}, laissez un commentaire</h2>
+			<h2 class="text-xl font-semibold mb-4">
+				{% if app.user %}
+					{{ app.user.username }}, laissez un commentaire !
+				{% else %}
+					Laissez un commentaire !
+				{% endif %}
+			</h2>
 			{% if app.user %}
 				<form action="{{ path('comment_post', {'articleId': article.id}) }}" method="post">
 					<div class="mb-4">
