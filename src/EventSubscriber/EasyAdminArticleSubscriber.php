@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class EasyAdminSubscriber implements EventSubscriberInterface
+class EasyAdminArticleSubscriber implements EventSubscriberInterface
 {
     private $tokenStorage;
 
@@ -20,7 +20,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            BeforeEntityPersistedEvent::class => [['setPublicationDate'], ['setModificationDate'], ['assignAuthor']],
+            BeforeEntityPersistedEvent::class => [['setPublicationDate'], ['setModificationDate'], ['assignAuthor'], ['updateCommentData']],
         ];
     }
 

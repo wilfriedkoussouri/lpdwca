@@ -21,6 +21,14 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    public function findAllArticles()
+    {
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.modificationDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findLatestArticles(int $limit = 3)
     {
         return $this->createQueryBuilder('a')

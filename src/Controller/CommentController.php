@@ -33,6 +33,6 @@ class CommentController extends AbstractController
         $entityManager->flush();
 
 
-        return $this->redirectToRoute('article_show', ['id' => $articleId]);
+        return $this->redirectToRoute('show_one_article', ['id' => $articleId]);
     }
 }

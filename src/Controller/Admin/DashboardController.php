@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Comment;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -63,7 +64,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Comments');
         yield MenuItem::subMenu('Actions', "fas fa-bars")->setSubItems(
             [
-                MenuItem::linkToCrud('Show Comments', "fas fa-eye", Article::class),
+                MenuItem::linkToCrud('Show Comments', "fas fa-eye", Comment::class),
             ]
         );
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);

@@ -12,8 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ArticleController extends AbstractController
 {
-    #[Route('/article/{id}', name: 'article_show')]
-    public function detail($id, ArticleRepository $articleRepository, CommentRepository $commentRepository): Response
+    #[Route('/article/{id}', name: 'show_one_article')]
+    public function showOneArticle($id, ArticleRepository $articleRepository, CommentRepository $commentRepository): Response
     {
         $article = $articleRepository->findOneById($id);
         $comments = $commentRepository->findLatestByArticle($article->getId());
@@ -26,11 +26,22 @@ class ArticleController extends AbstractController
         }
 
         // Passer les détails de l'article au template Twig pour l'affichage
-        return $this->render('article/index.html.twig', [
+        return $this->render('article/article.html.twig', [
             'article' => $article,
             "comments" => $comments,
             'previousArticle' => $previousArticle,
             'nextArticle' => $nextArticle,
+        ]);
+    }
+
+    #[Route('/articles', name: 'show_all_articles')]
+    public function showAllArticles(ArticleRepository $articleRepository, CommentRepository $commentRepository): Response
+    {
+        $articles = $articleRepository->findAllArticles();
+
+        // Passer les détails de l'article au template Twig pour l'affichage
+        return $this->render('article/articles.html.twig', [
+            'articles' => $articles,
         ]);
     }
 }

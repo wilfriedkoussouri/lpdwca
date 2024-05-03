@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home
+{% block title %}
+	Tous les artciles
 {% endblock %}
 
 {% block body %}
 	<div class="container mx-auto p-8">
-		<h1 class="text-3xl font-bold text-center mb-8">Latest Blog Posts</h1>
+		<h1 class="text-3xl font-bold text-center mb-8">Tous les articles</h1>
 		<div class="bg-white rounded-lg shadow-md p-6">
 			<div class="grid md:grid-cols-3 gap-8">
 				{% include "article/_articles.html.twig" %}
 			</div>
-			<a href="{{path('show_all_articles')}}" class="font-semibold leading-6 text-gray-900 hover:text-gray-700 mt-10 block text-center">Voir tous les articles</a>
 		</div>
 	</div>
 {% endblock %}
