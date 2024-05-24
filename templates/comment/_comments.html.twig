@@ -30,18 +30,49 @@
 		<div class="max-w-xl text-base leading-7 text-gray-700 lg:max-w-lg overflow-y-auto" style="height: 600px;">
 			<h2 class="text-xl font-semibold mb-4">Commentaires</h2>
 			{% for comment in comments %}
-				<div class="mb-4 p-4 shadow rounded-lg">
-					<div class="flex justify-between">
-						<p>
-							<strong>{{ comment.user }}</strong>
-							<span class="text-xsm text-gray-500">({{ comment.modificationDate|date('d M. Y') }})</span>
-						</p>
-						<a href="" class="text-xsm block text-gray-400">
-							Signaler le commentaire
-						</a>
+				{% if comment.reportCount == 0 or comment.hasBeenValidated  %}
+					<div class="mb-4 p-4 shadow rounded-lg">
+						<div class="flex justify-between">
+							<p>
+								<strong>{{ comment.user }}</strong>
+								<span class="text-xsm text-gray-500">({{ comment.modificationDate|date('d M. Y') }})</span>
+							</p>
+
+							{% if comment.hasBeenValidated %}
+								<p class="text-xsm block text-white bg-green-400 rounded-md px-3">
+									Validé par un modérateur
+								</p>
+							{% else %}
+								<a href="{{ path('report_comment', {commentId: comment.id}) }}" class="text-xsm block text-gray-400">
+									Signaler le commentaire
+								</a>
+							{% endif %}
+
+
+						</div>
+						<p>{{ comment.content }}</p>
 					</div>
-					<p>{{ comment.content }}</p>
-				</div>
+				{% elseif comment.hasBeenValidated is same as false %}
+					<div class="mb-4 p-4 shadow rounded-lg">
+						<div class="flex justify-between">
+							<p>
+								<strong>{{ comment.user }}</strong>
+								<span class="text-xsm text-gray-500">({{ comment.modificationDate|date('d M. Y') }})</span>
+							</p>
+						</div>
+						<p class="text-gray-400 text-sm italic underline">Ce commentaire à été refusé par un modérateur</p>
+					</div>
+				{% else  %}
+					<div class="mb-4 p-4 shadow rounded-lg">
+						<div class="flex justify-between">
+							<p>
+								<strong>{{ comment.user }}</strong>
+								<span class="text-xsm text-gray-500">({{ comment.modificationDate|date('d M. Y') }})</span>
+							</p>
+						</div>
+						<p class="text-red-400 text-sm italic underline">Ce commentaire est en attente de modération suite à un signalement.</p>
+					</div>
+				{% endif %}
 			{% else %}
 				<p>Aucun commentaire pour cet article.</p>
 			{% endfor %}

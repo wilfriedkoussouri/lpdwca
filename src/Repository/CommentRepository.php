@@ -32,6 +32,16 @@ class CommentRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function countUnvalidatedComments(): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->where('c.hasBeenValidated is NULL')
+            ->andWhere('c.reportCount > 0')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     //    /**
     //     * @return Comment[] Returns an array of Comment objects
     //     */

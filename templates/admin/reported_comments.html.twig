@@ -1,0 +1,30 @@
+{# templates/admin/reported_comments.html.twig #}
+
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content %}
+	<h1>Reported Comments</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>User</th>
+				<th>Content</th>
+				<th>Publication Date</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for comment in reportedComments %}
+				<tr>
+					<td>{{ comment.user.username }}</td>
+					<td>{{ comment.content }}</td>
+					<td>{{ comment.publicationDate|date('Y-m-d H:i') }}</td>
+					<td>
+						<a href="{{ path('admin', {crudControllerFqcn: 'App\\Controller\\Admin\\CommentCrudController', action: 'validateReport', entityId: comment.id}) }}" class="btn btn-success">Validate</a>
+						<a href="{{ path('admin', {crudControllerFqcn: 'App\\Controller\\Admin\\CommentCrudController', action: 'deleteReport', entityId: comment.id}) }}" class="btn btn-danger">Delete</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

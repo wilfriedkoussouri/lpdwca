@@ -54,11 +54,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $comments;
 
+    /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\ManyToMany(targetEntity: Comment::class, mappedBy: 'reportedBy')]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->setRegistrationDate(new \DateTime());
+        $this->reports = new ArrayCollection();
     }
 
     public function __toString()
@@ -220,6 +227,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($comment->getUser() === $this) {
                 $comment->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Comment $report): static
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->addReportedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Comment $report): static
+    {
+        if ($this->reports->removeElement($report)) {
+            $report->removeReportedBy($this);
         }
 
         return $this;
