@@ -20,7 +20,7 @@ class EasyAdminArticleSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            BeforeEntityPersistedEvent::class => [['setPublicationDate'], ['setModificationDate'], ['assignAuthor'], ['updateCommentData']],
+            BeforeEntityPersistedEvent::class => [['setPublicationDate'], ['setModificationDate'], ['assignAuthor']],
         ];
     }
 
