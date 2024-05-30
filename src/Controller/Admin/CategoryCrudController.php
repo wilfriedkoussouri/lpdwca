@@ -18,8 +18,8 @@ class CategoryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('name'),
-            SlugField::new('slug')->setTargetFieldName('name')
+            TextField::new('name')->setRequired(true),
+            SlugField::new('slug')->setTargetFieldName('name')->setRequired(true),
         ];
     }
 }

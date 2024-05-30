@@ -24,11 +24,11 @@ class ArticleCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('title')->setLabel('Titre')->setHelp('Titre de votre article'),
-            SlugField::new('slug')->setTargetFieldName('title'),
-            TextEditorField::new('content'),
-            ImageField::new('image')->setLabel('Image')->setHelp("Image d'illustration de l'article")->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')->setBasePath('/uploads')->setUploadDir('/public/uploads'),
-            AssociationField::new('category', "Catégorie associée"),
+            TextField::new('title')->setLabel('Titre')->setHelp('Titre de votre article')->setRequired(true),
+            SlugField::new('slug')->setTargetFieldName('title')->setRequired(true),
+            TextEditorField::new('content')->setRequired(true),
+            ImageField::new('image')->setLabel('Image')->setHelp("Image d'illustration de l'article")->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')->setBasePath('/uploads')->setUploadDir('/public/uploads')->setRequired(true),
+            AssociationField::new('category', "Catégorie associée")->setRequired(true),
             DateTimeField::new('publicationDate')->setLabel('Date de publication')->setFormat('dd/MM/YY')->hideOnForm(),
             DateTimeField::new('modificationDate')->setLabel('Date de modification')->setFormat('dd/MM/YY')->hideOnForm(),
             TextField::new('author')->setLabel('Auteur')->hideOnForm(),
