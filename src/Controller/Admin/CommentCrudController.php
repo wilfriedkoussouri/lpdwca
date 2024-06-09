@@ -3,19 +3,33 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Comment;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * @Route("/admin/comment", name="admin_comment")
+ */
 class CommentCrudController extends AbstractCrudController
 {
+    private AdminUrlGenerator $adminUrlGenerator;
+
+    public function __construct(AdminUrlGenerator $adminUrlGenerator)
+    {
+        $this->adminUrlGenerator = $adminUrlGenerator;
+    }
+
     public static function getEntityFqcn(): string
     {
         return Comment::class;
@@ -59,5 +73,39 @@ class CommentCrudController extends AbstractCrudController
                 return 'Inconnu';
             })
             ->hideOnForm();
+    }
+
+    public function validateComment(AdminContext $context, EntityManagerInterface $entityManager): RedirectResponse
+    {
+        $comment = $context->getEntity()->getInstance();
+        if ($comment instanceof Comment) {
+            $comment->setHasBeenValidated(true);
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $this->addFlash('success', 'Commentaire validé avec succès.');
+        }
+
+        $url = $this->adminUrlGenerator->setController(static::class)
+            ->setAction('index')
+            ->generateUrl();
+
+        return $this->redirect($url);
+    }
+
+    public function moderateComment(AdminContext $context, EntityManagerInterface $entityManager): RedirectResponse
+    {
+        $comment = $context->getEntity()->getInstance();
+        if ($comment instanceof Comment) {
+            $comment->setHasBeenValidated(false);
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $this->addFlash('warning', 'Commentaire modéré avec succès.');
+        }
+
+        $url = $this->adminUrlGenerator->setController(static::class)
+            ->setAction('index')
+            ->generateUrl();
+
+        return $this->redirect($url);
     }
 }

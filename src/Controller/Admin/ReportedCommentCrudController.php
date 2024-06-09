@@ -21,6 +21,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
+/**
+ * @Route("/admin/reported_comment", name="admin_reported_comment")
+ */
 class ReportedCommentCrudController extends AbstractCrudController
 {
     private AdminUrlGenerator $adminUrlGenerator;
@@ -88,7 +91,12 @@ class ReportedCommentCrudController extends AbstractCrudController
             $entityManager->flush();
             $this->addFlash('success', 'Comment validated successfully.');
         }
-        return $this->redirect($this->adminUrlGenerator->setController(static::class)->generateUrl());
+
+        $url = $this->adminUrlGenerator->setController(static::class)
+            ->setAction('index')
+            ->generateUrl();
+
+        return $this->redirect($url);
     }
 
     public function moderateComment(AdminContext $context, EntityManagerInterface $entityManager): Response
@@ -100,6 +108,11 @@ class ReportedCommentCrudController extends AbstractCrudController
             $entityManager->flush();
             $this->addFlash('warning', 'Comment moderated successfully.');
         }
-        return $this->redirect($this->adminUrlGenerator->setController(static::class)->generateUrl());
+
+        $url = $this->adminUrlGenerator->setController(static::class)
+            ->setAction('index')
+            ->generateUrl();
+
+        return $this->redirect($url);
     }
 }
