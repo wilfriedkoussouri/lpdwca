@@ -1,6 +1,6 @@
 <header class="bg-gray-100">
-	<nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-		<div class="flex lg:flex-1">
+	<nav class="mx-auto flex flex-col lg:flex-row max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+		<div class="flex w-full justify-between lg:justify-start lg:flex-1">
 			<a href="/" class="-m-1.5 p-1.5">
 				<span class="sr-only">Insight blog</span>
 				<img class="h-8 w-auto" src="{{ asset('images/logos/logo.png') }}" alt="Logo">
@@ -8,25 +8,26 @@
 		</div>
 
 		<!-- Menu central avec les liens About et Contact -->
-		<div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-center">
+		<div class="flex flex-col lg:flex-row lg:flex-1 lg:items-center lg:justify-center w-full lg:w-auto mt-4 lg:mt-0">
 			<a href="{{ path('app_home') }}" class="text-sm font-semibold leading-6 text-gray-900 mx-4">Home</a>
 			<a href="{{ path('app_about') }}" class="text-sm font-semibold leading-6 text-gray-900 mx-4">About</a>
 			<a href="{{ path('app_contact') }}" class="text-sm font-semibold leading-6 text-gray-900 mx-4">Contact</a>
 		</div>
 
 		<div
-			class="lg:flex lg:flex-1 lg:justify-end">
+			class="flex flex-col lg:flex-row lg:flex-1 lg:justify-end w-full lg:w-auto mt-4 lg:mt-0">
 			<!-- Afficher ce contenu pour les écrans de grande taille -->
 			{% if app.user %}
-				<p class="text-sm font-semibold leading-6 text-gray-900 mr-2">Hi
-					{{ app.user }}!</p>
-				<a href="{{ path('app_logout') }}" class="text-sm font-semibold leading-6 text-gray-900">Log out
-					<span aria-hidden="true">&rarr;</span>
-				</a>
+				<p class="text-sm font-semibold leading-6 text-gray-900 mr-5 lg:mr-0">Hi
+					{{ app.user }}!
+					<a href="{{ path('app_logout') }}" class="text-sm font-semibold leading-6 text-gray-900 lg:ml-4">Log out
+						<span aria-hidden="true">&rarr;</span>
+					</a>
+				</p>
 			{% else %}
 				{% set current_route = app.request.attributes.get('_route') %}
 				{% if current_route != 'app_login' and current_route != 'app_register' %}
-					<a href="{{ path('app_login') }}" class="text-sm font-semibold leading-6 text-gray-900">Log in
+					<a href="{{ path('app_login') }}" class="text-sm font-semibold leading-6 text-gray-900 lg:ml-4">Log in
 						<span aria-hidden="true">&rarr;</span>
 					</a>
 				{% endif %}
