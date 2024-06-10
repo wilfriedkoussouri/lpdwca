@@ -50,7 +50,7 @@
 
 
 						</div>
-						<p>{{ comment.content }}</p>
+						<p>{{ comment.content|raw }}</p>
 					</div>
 				{% elseif comment.hasBeenValidated is same as false %}
 					<div class="mb-4 p-4 shadow rounded-lg">
