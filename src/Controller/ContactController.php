@@ -2,38 +2,86 @@
 
 namespace App\Controller;
 
+use App\Form\ContactFormType;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 class ContactController extends AbstractController
 {
     #[Route('/contact', name: 'app_contact')]
-    public function index(): Response
+    public function index(Request $request, MailerInterface $mailer): Response
     {
+        $form = $this->createForm(ContactFormType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $email = (new Email())
+                ->from('contact@lpdwca.xyz')
+                ->to('wilfried.koussouri@sfr.fr')
+                ->subject('Contact Form Submission')
+                ->text(
+                    sprintf(
+                        "First Name: %s\nLast Name: %s\nCompany: %s\nCountry: %s\nPhone Number: %s\n\nMessage:\n%s",
+                        $data['firstName'],
+                        $data['lastName'],
+                        $data['email'],
+                        $data['company'],
+                        $data['phoneNumber'],
+                        $data['message']
+                    )
+                );
+
+            $mailer->send($email);
+
+            $this->addFlash('success', 'Your message has been sent successfully!');
+
+            return $this->redirectToRoute('app_home');
+        }
+
         return $this->render('contact/index.html.twig', [
-            'controller_name' => 'ContactController',
+            'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/send_mail', name: 'app_send_mail')]
-    public function sendMail(MailerInterface $mailer): Response
-    {
-        $email = (new Email())
-            ->from('will0fried@gmail.com')
-            ->to('wilfried.koussouri@sfr.fr')
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!')
-            ->html('<p>See Twig integration for better HTML integration!</p>');
+    // #[Route('/send_mail', name: 'app_send_mail')]
+    // public function sendMail(MailerInterface $mailer): Response
+    // {
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $data = $form->getData();
 
-        $mailer->send($email);
+    //         // Send the email
+    //         $email = (new Email())
+    //             ->from($data['email'])
+    //             ->to('your_email@example.com')
+    //             ->subject('Contact Form Submission')
+    //             ->text(
+    //                 sprintf(
+    //                     "First Name: %s\nLast Name: %s\nCompany: %s\nCountry: %s\nPhone Number: %s\n\nMessage:\n%s",
+    //                     $data['firstName'],
+    //                     $data['lastName'],
+    //                     $data['company'],
+    //                     $data['country'],
+    //                     $data['phoneNumber'],
+    //                     $data['message']
+    //                 )
+    //             );
 
-        return $this->redirectToRoute('app_home');
-    }
+    //         $mailer->send($email);
+
+    //         $this->addFlash('success', 'Your message has been sent successfully!');
+
+    //         return $this->redirectToRoute('app_contact');
+    //     }
+
+    //     return $this->render('contact.html.twig', [
+    //         'form' => $form->createView(),
+    //     ]);
+    // }
 }
